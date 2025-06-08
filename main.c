@@ -122,6 +122,7 @@ static void activate(GtkApplication *app, gpointer unused) {
 	g_signal_connect(win, "map", G_CALLBACK(on_map), NULL);
 
 	GtkEventController *kc = gtk_event_controller_key_new();
+	gtk_event_controller_set_propagation_phase(kc, GTK_PHASE_CAPTURE);
 	g_signal_connect(kc, "key-pressed", G_CALLBACK(on_key_pressed), app);
 	gtk_widget_add_controller(GTK_WIDGET(win), kc);
 
@@ -155,6 +156,11 @@ static void activate(GtkApplication *app, gpointer unused) {
 	g_signal_connect(search, "activate", G_CALLBACK(on_search_entry_activate),
 					 app);
 
+	GtkEventController *sk = gtk_event_controller_key_new();
+	gtk_event_controller_set_propagation_phase(sk, GTK_PHASE_CAPTURE);
+	g_signal_connect(sk, "key-pressed", G_CALLBACK(on_key_pressed), app);
+	gtk_widget_add_controller(GTK_WIDGET(search), sk);
+
 	gtk_widget_add_css_class(GTK_WIDGET(win), "window");
 	gtk_widget_add_css_class(GTK_WIDGET(win), "overlay-launcher");
 	gtk_widget_add_css_class(vbox, "vbox");
@@ -162,7 +168,6 @@ static void activate(GtkApplication *app, gpointer unused) {
 	gtk_widget_add_css_class(scrolled, "scrolled-window");
 	gtk_widget_add_css_class(GTK_WIDGET(list), "list-box");
 
-	GtkListBoxRow *row;
 	GList *apps = g_app_info_get_all();
 	for (GList *l = apps; l; l = l->next) {
 		GAppInfo *info = G_APP_INFO(l->data);
@@ -184,7 +189,7 @@ static void activate(GtkApplication *app, gpointer unused) {
 		gtk_box_append(GTK_BOX(hbox), img);
 		gtk_box_append(GTK_BOX(hbox), lbl);
 
-		row = GTK_LIST_BOX_ROW(gtk_list_box_row_new());
+		GtkListBoxRow *row = GTK_LIST_BOX_ROW(gtk_list_box_row_new());
 		gtk_widget_add_css_class(GTK_WIDGET(row), "list-box-row");
 		gtk_widget_add_css_class(hbox, "hbox");
 		gtk_widget_add_css_class(img, "app-image");
