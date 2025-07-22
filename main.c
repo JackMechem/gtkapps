@@ -1,5 +1,5 @@
 #include <gio/gio.h>
-#include <gtk-layer-shell/gtk-layer-shell.h>
+#include <gtk4-layer-shell/gtk4-layer-shell.h>
 #include <gtk/gtk.h>
 #include <string.h>
 
