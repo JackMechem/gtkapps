@@ -20,6 +20,7 @@
             pkgs.pkg-config
             pkgs.meson
             pkgs.ninja
+            pkgs.makeWrapper
           ];
 
           buildInputs = [
@@ -29,6 +30,11 @@
             pkgs.glib.dev  # for gio-unix-2.0 and headers
             pkgs.cjson
           ];
+
+          postInstall = ''
+            wrapProgram $out/bin/gtkapps \
+              --prefix XDG_DATA_DIRS : "${pkgs.gtk4}/share"
+          '';
         };
       in {
         packages.default = gtkapps;
