@@ -21,6 +21,7 @@
             pkgs.meson
             pkgs.ninja
             pkgs.makeWrapper
+            pkgs.wrapGAppsHook4
           ];
 
           buildInputs = [
@@ -31,10 +32,7 @@
             pkgs.cjson
           ];
 
-          postInstall = ''
-            wrapProgram $out/bin/gtkapps \
-              --prefix XDG_DATA_DIRS : "${pkgs.gtk4}/share"
-          '';
+
         };
       in {
         packages.default = gtkapps;
@@ -44,6 +42,7 @@
             pkgs.pkg-config
             pkgs.meson
             pkgs.ninja
+            pkgs.wrapGAppsHook4
           ];
           buildInputs = [
             pkgs.gtk4
